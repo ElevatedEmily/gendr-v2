@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Profile" ADD COLUMN "image1" TEXT;
+ALTER TABLE "Profile" ADD COLUMN "image2" TEXT;
+ALTER TABLE "Profile" ADD COLUMN "image3" TEXT;
+ALTER TABLE "Profile" ADD COLUMN "image4" TEXT;
+ALTER TABLE "Profile" ADD COLUMN "image5" TEXT;
+ALTER TABLE "Profile" ADD COLUMN "image6" TEXT;

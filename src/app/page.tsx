@@ -1,100 +1,61 @@
-import Image from "next/image";
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-200 via-blue-100 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Background Decorations */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-16 left-16 w-96 h-96 bg-pink-300 dark:bg-pink-700 rounded-full opacity-30 blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-300 dark:bg-blue-700 rounded-full opacity-30 blur-3xl"></div>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      {/* Main Content */}
+      <div className="relative z-10 w-full max-w-4xl p-8 bg-white/80 dark:bg-gray-800/80 rounded-2xl shadow-lg backdrop-blur-md">
+        <header className="w-full mb-8 flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Gendr</h1>
+          <nav>
+            <a
+              href="/signup"
+              className="px-4 py-2 bg-blue-500 dark:bg-blue-700 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-800 transition text-white"
+            >
+              Sign Up
+            </a>
+            <a
+              href="/login"
+              className="ml-4 px-4 py-2 bg-gray-800 dark:bg-gray-700 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition text-white"
+            >
+              Log In
+            </a>
+          </nav>
+        </header>
+
+        <main className="text-center">
+          <h2 className="text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">
+            Welcome to Gendr 💕
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+            Meet gender queer people who share your interests and values. Gendr
+            is designed to help you connect and build meaningful relationships.
+            Sign up now and join the fun!
+          </p>
+          <div className="flex space-x-4 justify-center">
+            <a
+              href="/signup"
+              className="px-6 py-3 bg-pink-500 dark:bg-pink-700 text-white font-semibold rounded-lg hover:bg-pink-600 dark:hover:bg-pink-800 transition"
+            >
+              Get Started
+            </a>
+            <a
+              href="/login"
+              className="px-6 py-3 bg-blue-500 dark:bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-600 dark:hover:bg-blue-800 transition"
+            >
+              Log In
+            </a>
+          </div>
+        </main>
+      </div>
+
+      {/* Footer */}
+      <footer className="mt-10 text-gray-400 dark:text-gray-500 text-sm">
+        © {new Date().getFullYear()} Gendr. All rights reserved.
       </footer>
     </div>
   );

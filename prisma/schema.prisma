@@ -1,0 +1,49 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db" // SQLite database file
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String?
+  profile  Profile?
+}
+
+model Profile {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @unique
+  user       User     @relation(fields: [userId], references: [id])
+  name       String?
+  age        Int?
+  bio        String?
+  avatarUrl  String?
+  image1     String?  // Optional first image
+  image2     String?  // Optional second image
+  image3     String?  // Optional third image
+  image4     String?  // Optional fourth image
+  image5     String?  // Optional fifth image
+  image6     String?  // Optional sixth image
+  images     Image[]  // Relation to images
+  interests  Interest[] // Relation to interests
+}
+
+
+model Image {
+  id         Int      @id @default(autoincrement())
+  url        String
+  profileId  Int
+  profile    Profile  @relation(fields: [profileId], references: [id])
+}
+
+model Interest {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  profileId  Int
+  profile    Profile  @relation(fields: [profileId], references: [id])
+}
