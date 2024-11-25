@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a genderqueer dating app called gendr. It is a fullstack app that uses sqlite and prisma for the database; typescript, reactjs, and tailwindcss for the frontend; and nextjs for the backend.
 
 ## Getting Started
 
