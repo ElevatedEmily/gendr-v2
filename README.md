@@ -1,8 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a genderqueer dating app called gendr. It is a fullstack app that uses sqlite and prisma for the database; typescript, reactjs, and tailwindcss for the frontend; and nextjs for the backend.
 
 ## Getting Started
 
-First, run the development server:
+install code base 
+```bash
+git clone  https://github.com/ElevatedEmily/gendr-v2.git
+```
+
+install dependencies
+```bash
+ npm install nextauth bcrypt prisma path fs react-icons framer-motion tailwindcss next react-slick --legacy-peer-deps
+
+```
+set up the database
+
+```bash
+npx prisma migrate dev --name init
+```
+
+run the development server:
 
 ```bash
 npm run dev
