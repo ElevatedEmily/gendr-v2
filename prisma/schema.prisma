@@ -13,37 +13,63 @@ model User {
   password String
   name     String?
   profile  Profile?
+
+  // Corrected fields for matches
+  matchesAsUser1 Match[]   @relation("User1Matches") // Matches where the user is user1
+  matchesAsUser2 Match[]   @relation("User2Matches") // Matches where the user is user2
+  sentMessages   Message[] @relation("SenderMessages") // Messages sent by the user
 }
 
 model Profile {
-  id         Int      @id @default(autoincrement())
-  userId     Int      @unique
-  user       User     @relation(fields: [userId], references: [id])
-  name       String?
-  age        Int?
-  bio        String?
-  avatarUrl  String?
-  image1     String?  // Optional first image
-  image2     String?  // Optional second image
-  image3     String?  // Optional third image
-  image4     String?  // Optional fourth image
-  image5     String?  // Optional fifth image
-  image6     String?  // Optional sixth image
-  images     Image[]  // Relation to images
-  interests  Interest[] // Relation to interests
+  id        Int        @id @default(autoincrement())
+  userId    Int        @unique
+  user      User       @relation(fields: [userId], references: [id])
+  name      String?
+  age       Int?
+  bio       String?
+  avatarUrl String?
+  image1    String? // Optional first image
+  image2    String? // Optional second image
+  image3    String? // Optional third image
+  image4    String? // Optional fourth image
+  image5    String? // Optional fifth image
+  image6    String? // Optional sixth image
+  images    Image[] // Relation to images
+  interests Interest[] // Relation to interests
 }
 
-
 model Image {
-  id         Int      @id @default(autoincrement())
-  url        String
-  profileId  Int
-  profile    Profile  @relation(fields: [profileId], references: [id])
+  id        Int     @id @default(autoincrement())
+  url       String
+  profileId Int
+  profile   Profile @relation(fields: [profileId], references: [id])
 }
 
 model Interest {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
-  profileId  Int
-  profile    Profile  @relation(fields: [profileId], references: [id])
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  profileId Int
+  profile   Profile @relation(fields: [profileId], references: [id])
+}
+
+model Match {
+  id        Int       @id @default(autoincrement())
+  user1Id   Int
+  user1     User      @relation("User1Matches", fields: [user1Id], references: [id]) // Relation named "User1Matches"
+  user2Id   Int
+  user2     User      @relation("User2Matches", fields: [user2Id], references: [id]) // Relation named "User2Matches"
+  messages  Message[]
+  createdAt DateTime  @default(now())
+
+  @@unique([user1Id, user2Id]) // Prevent duplicate matches
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  matchId   Int
+  match     Match    @relation(fields: [matchId], references: [id])
+  senderId  Int
+  sender    User     @relation("SenderMessages", fields: [senderId], references: [id]) // Relation named "SenderMessages"
+  content   String
+  createdAt DateTime @default(now())
 }

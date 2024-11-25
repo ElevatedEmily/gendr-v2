@@ -10,8 +10,7 @@ export default function SwipePage() {
   const [error, setError] = useState<string | null>(null);
   const [gradientPosition, setGradientPosition] = useState(50);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [rotation, setRotation] = useState(0);
-  const [isSwiping, setIsSwiping] = useState(false);
+  const [rotation, setRotation] = useState(0); // Rotation for the card
   const cardRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,6 +36,36 @@ export default function SwipePage() {
     fetchProfiles();
   }, []);
 
+  const updateLikeStatus = async (profileId: number, action: 'like' | 'dislike') => {
+    try {
+      await fetch('/api/swipe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profileId, action }),
+      });
+    } catch (error) {
+      console.error(`Error updating ${action}:`, error);
+    }
+  };
+
+  const handleSwipe = async (direction: 'left' | 'right') => {
+    if (!profiles[currentIndex]) return;
+
+    const profileId = profiles[currentIndex]?.id;
+    const action = direction === 'right' ? 'like' : 'dislike';
+    await updateLikeStatus(profileId, action);
+
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+      setRotation(0); // Reset rotation after swipe
+    }, 300);
+  };
+
+  const handleButtonSwipe = async (direction: 'left' | 'right') => {
+    setRotation(direction === 'right' ? 15 : -15); // Add rotation effect for button swipes
+    await handleSwipe(direction);
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const screenWidth = window.innerWidth;
     const cursorX = e.clientX;
@@ -52,55 +81,20 @@ export default function SwipePage() {
     return `linear-gradient(to right, rgba(255, 182, 193, ${pinkIntensity / 100}) 0%, rgba(173, 216, 230, ${blueIntensity / 100}) 100%)`;
   };
 
-  const handleDrag = (event: any, info: any) => {
-    setRotation(info.offset.x / 20);
-
-    const screenWidth = window.innerWidth;
-    const triggerWidth = screenWidth / 10;
-    const cardCenterX = info.point.x;
-    const cardWidth = cardRef.current?.offsetWidth || 0;
-
-    if (
-      !isSwiping &&
-      (cardCenterX - cardWidth / 2 <= triggerWidth || cardCenterX + cardWidth / 2 >= screenWidth - triggerWidth)
-    ) {
-      setIsSwiping(true);
-      const direction = cardCenterX > screenWidth / 2 ? 'right' : 'left';
-      handleSwipe(direction);
-    }
-  };
-
-  const handleSwipe = (direction: 'left' | 'right') => {
-    console.log(`Swiped ${direction} on profile ${profiles[currentIndex]?.id}`);
-    setTimeout(() => {
-      setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, profiles.length - 1));
-      setRotation(0);
-      setIsSwiping(false);
-    }, 300);
-  };
-
-  const handleButtonSwipe = (direction: 'left' | 'right') => {
-    console.log(`Button swipe ${direction}`);
-    setIsSwiping(true);
-    setTimeout(() => {
-      setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, profiles.length - 1));
-      setRotation(0);
-      setIsSwiping(false);
-    }, 300);
-  };
-
   const calculateDragConstraints = () => {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
     const cardWidth = cardRef.current?.offsetWidth || 0;
 
     return {
-      top: 0, // Prevent moving above the top of the screen
-      bottom: screenHeight - (cardRef.current?.offsetHeight || 0), // Prevent moving below the screen
-      left: -screenWidth * 0.75 + cardWidth / 2, // Allow movement 3/4th of the screen width to the left
-      right: screenWidth * 0.75 - cardWidth / 2, // Allow movement 3/4th of the screen width to the right
+      top: 0,
+      bottom: screenHeight - (cardRef.current?.offsetHeight || 0),
+      left: -screenWidth * 0.75 + cardWidth / 2,
+      right: screenWidth * 0.75 - cardWidth / 2,
     };
   };
+
+  const calculateRotation = (offsetX: number) => offsetX / 10; // Adjust rotation sensitivity
 
   const orbStyles = {
     pink: {
@@ -150,16 +144,6 @@ export default function SwipePage() {
           : getLightModeGradient(),
       }}
     >
-      {/* Trigger Areas */}
-      <div
-        className="absolute top-0 left-0 h-full bg-transparent z-20 pointer-events-none"
-        style={{ width: '10%' }}
-      ></div>
-      <div
-        className="absolute top-0 right-0 h-full bg-transparent z-20 pointer-events-none"
-        style={{ width: '10%' }}
-      ></div>
-
       {/* Dark Mode Orbs */}
       {document.documentElement.classList.contains('dark') && (
         <div className="absolute inset-0 pointer-events-none">
@@ -188,8 +172,14 @@ export default function SwipePage() {
             }}
             drag
             dragConstraints={calculateDragConstraints()}
-            dragElastic={{ top: 0.3, bottom: 0.3, left: 0.75, right: 0.75 }} // Dynamically set constraints
-            onDrag={handleDrag}
+            onDrag={(e, info) => {
+              setRotation(calculateRotation(info.offset.x));
+            }}
+            onDragEnd={(e, info) => {
+              if (info.offset.x > 150) handleSwipe('right');
+              else if (info.offset.x < -150) handleSwipe('left');
+              else setRotation(0); // Reset rotation if not swiped
+            }}
             animate={{ rotate: rotation }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
