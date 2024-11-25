@@ -2,7 +2,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+install code base 
+```bash
+git clone  https://github.com/ElevatedEmily/gendr-v2.git
+```
+
+install dependencies
+```bash
+ npm install nextauth bcrypt prisma path fs react-icons framer-motion tailwindcss next react-slick --legacy-peer-deps
+
+```
+set up the database
+
+```bash
+npx prisma migrate dev --name init
+```
+
+run the development server:
 
 ```bash
 npm run dev
